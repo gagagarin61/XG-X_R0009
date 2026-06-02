@@ -1,0 +1,841 @@
+============================================================
+【unit_0000_R0109_20260602_153304_CMD0010.txt】
+============================================================
+GW,1
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_CMD0016.txt】
+============================================================
+GW,2
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0007.txt】
+============================================================
+'キャリブレーション結果の抽出
+@a = CalibInfo( $Img_Size[0].X , $Img_Size[0].Y , $Stage_CalibrationData_Cam1[] , $CalbInfo1[] ) 
+@a = CalibInfo( $Img_Size[1].X , $Img_Size[1].Y , $Stage_CalibrationData_Cam2[] , $CalbInfo2[] ) 
+'@a = CalibInfo( $Img_Size[2].X , $Img_Size[2].Y , $Stage_CalibrationData_Cam3[] , $CalbInfo3[] ) 
+'@a = CalibInfo( $Img_Size[3].X , $Img_Size[3].Y , $Stage_CalibrationData_Cam4[] , $CalbInfo4[] ) 
+'分解能mm→μm変換
+$CalbInfo1[2] = $CalbInfo1[2]*1000
+$CalbInfo1[3] = $CalbInfo1[3]*1000
+$CalbInfo2[2] = $CalbInfo2[2]*1000
+$CalbInfo2[3] = $CalbInfo2[3]*1000
+'$CalbInfo3[2] = $CalbInfo3[2]*1000
+'$CalbInfo3[3] = $CalbInfo3[3]*1000
+'$CalbInfo4[2] = $CalbInfo4[2]*1000
+'$CalbInfo4[3] = $CalbInfo4[3]*1000
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0013.txt】
+============================================================
+'基準位置格納
+FOR @a=0 TO 3
+	#MasterPosSelect_target_pix[@a] = #RegMasterPos_target_pix[@a]
+	#MasterPosSelect_object_pix[@a] = #RegMasterPos_object_pix[@a]
+NEXT
+#RegMasterPosselec_target_CamXY[0] =#RegMasterPos_target_CamXY[0]
+#RegMasterPosselec_target_CamXY[1] =#RegMasterPos_target_CamXY[1]
+#RegMasterPosselec_object_CamXY[0] =#RegMasterPos_object_CamXY[0]
+#RegMasterPosselec_object_CamXY[1] =#RegMasterPos_object_CamXY[1]
+#RegMasterPosselec_target_CamXY[0].X = #RegMasterPos_target_CamXY[0].X
+#RegMasterPosselec_target_CamXY[1].X = #RegMasterPos_target_CamXY[1].X
+#AlignmentPosselec_target_CamXY[0].X = #AlignmentPos_target_CamXY[0].X
+#AlignmentPosselec_target_CamXY[1].X = #AlignmentPos_target_CamXY[1].X
+#AlignmentPosselec_target_CamXY[0].Y = #AlignmentPos_target_CamXY[0].Y
+#AlignmentPosselec_target_CamXY[1].Y = #AlignmentPos_target_CamXY[1].Y
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0014.txt】
+============================================================
+'基準位置格納
+FOR @a=0 TO 3
+	#MasterPosSelect_target_pix[@a] = $Img_center[@a]
+	#MasterPosSelect_object_pix[@a] = $Img_center[@a]
+NEXT
+#RegMasterPosselec_target_CamXY[0] =#AlignmentPos_target_CamXY[0]
+#RegMasterPosselec_target_CamXY[1] =#AlignmentPos_target_CamXY[1]
+#RegMasterPosselec_object_CamXY[0] =#AlignmentPos_object_CamXY[0]
+#RegMasterPosselec_object_CamXY[1] =#AlignmentPos_object_CamXY[1]
+#RegMasterPosselec_target_CamXY[0].X = -1*#AlignmentPos_target_CamXY[0].X
+#RegMasterPosselec_target_CamXY[1].X = -1*#AlignmentPos_target_CamXY[1].X
+#AlignmentPosselec_target_CamXY[0].X = -1*#AlignmentPos_target_CamXY[0].X
+#AlignmentPosselec_target_CamXY[1].X = -1*#AlignmentPos_target_CamXY[1].X
+#AlignmentPosselec_target_CamXY[0].Y = #AlignmentPos_target_CamXY[0].Y
+#AlignmentPosselec_target_CamXY[1].Y = #AlignmentPos_target_CamXY[1].Y
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0015.txt】
+============================================================
+'Search結果格納
+#Search_Result[0] = Max(!U[0011].RSLT.UJG,!U[0020].RSLT.UERR,!U[0038].RSLT.UERR) 
+#Search_Result[1] = Max(!U[0012].RSLT.UJG,!U[0040].RSLT.UERR,!U[0041].RSLT.UERR)
+#status_out = Max( #Search_Result[0] , #Search_Result[1] )
+'---------------------Cam3/4未使用---------------------
+'#Search_Result[2] = !U[0013].RSLT.UJG
+'#Search_Result[3] = !U[0014].RSLT.UJG
+'2Cam分合計判定
+IF #type_target_cam1 = 0 THEN
+	IF !U[0020].RSLT.DLX:AB = 0 AND !U[0020].RSLT.DLY:AB = 0 OR _
+   		!U[0038].RSLT.DLX:AB = 0 AND !U[0038].RSLT.DLY:AB = 0 THEN
+		#Search_Result[0] = 1
+	END IF
+END IF
+IF #type_target_cam2 = 0 THEN
+	IF !U[0040].RSLT.DLX:AB = 0 AND !U[0040].RSLT.DLY:AB = 0 OR _
+   		!U[0041].RSLT.DLX:AB = 0 AND !U[0041].RSLT.DLY:AB = 0 THEN
+		#Search_Result[1] = 1
+	END IF
+END IF
+#status_out = Max2( 2 , #Search_Result[] )
+ANS = #status_out
+'Cam1検出点格納
+IF #type_target_cam1 = 1 THEN
+	#Ave_Pos_target_pix[0] = !U[0011].RSLT.XY[JGL]:AB
+ELSE IF #type_target_cam1 = 0 THEN
+	#Ave_Pos_target_pix[0] = ISect(!U[0020].RSLT.DLRTH:AB,!U[0038].RSLT.DLRTH:AB)
+END IF
+'Cam2検出点格納
+IF #type_target_cam2 = 1 THEN
+	#Ave_Pos_target_pix[1] = !U[0012].RSLT.XY[JGL]:AB
+ELSE IF #type_target_cam2 = 0 THEN
+	#Ave_Pos_target_pix[1] = ISect(!U[0040].RSLT.DLRTH:AB,!U[0041].RSLT.DLRTH:AB)
+END IF
+'---------------------Cam3/4未使用---------------------
+'Cam3検出点格納
+'#Ave_Pos_target_pix[2] = !U[0013].RSLT.XY[JGL]:AB
+'Cam4検出点格納
+'#Ave_Pos_target_pix[3] = !U[0014].RSLT.XY[JGL]:AB
+'相関値格納
+#Correlation_target[0] = !U[0011].RSLT.C[JGL]:MS
+#Correlation_target[1] = !U[0012].RSLT.C[JGL]:MS
+'---------------------Cam3/4未使用---------------------
+'#Correlation_target[2] = !U[0013].RSLT.C[JGL]:MS
+'#Correlation_target[3] = !U[0014].RSLT.C[JGL]:MS
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0021.txt】
+============================================================
+'Search結果格納
+#Search_Result[0] = Max(!U[0017].RSLT.UJG,!U[0043].RSLT.UERR,!U[0044].RSLT.UERR)
+#Search_Result[1] = Max(!U[0018].RSLT.UJG,!U[0047].RSLT.UERR,!U[0046].RSLT.UERR)
+'#Search_Result[2] = !U[0019].RSLT.UJG
+'#Search_Result[3] = !U[0020].RSLT.UJG
+#status_out = Max( #Search_Result[0] , #Search_Result[1] )
+'2Cam分合計判定
+IF #type_object_cam1 = 0 THEN
+	IF !U[0043].RSLT.DLX:AB = 0 AND !U[0043].RSLT.DLY:AB = 0 OR _
+   		!U[0044].RSLT.DLX:AB = 0 AND !U[0044].RSLT.DLY:AB = 0 THEN
+		#Search_Result[0] = 1
+	END IF
+END IF
+IF #type_object_cam2 = 0 THEN
+	IF !U[0046].RSLT.DLX:AB = 0 AND !U[0046].RSLT.DLY:AB = 0 OR _
+   		!U[0047].RSLT.DLX:AB = 0 AND !U[0047].RSLT.DLY:AB = 0 THEN
+		#Search_Result[1] = 1
+	END IF
+END IF
+#status_out = Max2( 2 , #Search_Result[] )
+ANS = #status_out
+'Cam1検出点格納
+IF #type_object_cam1 = 1 THEN
+	#Ave_Pos_object_pix[0] = !U[0017].RSLT.XY[JGL]:AB
+ELSE IF #type_object_cam1 = 0 THEN
+	#Ave_Pos_object_pix[0] = ISect(!U[0043].RSLT.DLRTH:AB,!U[0044].RSLT.DLRTH:AB)
+END IF
+'Cam2検出点格納
+IF #type_object_cam2 = 1 THEN
+	#Ave_Pos_object_pix[1] = !U[0018].RSLT.XY[JGL]:AB
+ELSE IF #type_object_cam2 = 0 THEN
+	#Ave_Pos_object_pix[1] = ISect(!U[0046].RSLT.DLRTH:AB,!U[0047].RSLT.DLRTH:AB)
+END IF
+'---------------------Cam3/4未使用---------------------
+'Cam3検出点格納
+'#Ave_Pos_object_pix[2] = !U[0019].RSLT.XY[JGL]:AB
+'Cam4検出点格納
+'#Ave_Pos_object_pix[3] = !U[0020].RSLT.XY[JGL]:AB
+'相関値格納
+#Correlation_object[0] = !U[0017].RSLT.C[JGL]:MS
+#Correlation_object[1] = !U[0018].RSLT.C[JGL]:MS
+'---------------------Cam3/4未使用---------------------
+'#Correlation_object[2] = !U[0019].RSLT.C[JGL]:MS
+'#Correlation_object[3] = !U[0020].RSLT.C[JGL]:MS
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0023.txt】
+============================================================
+'★ManualAlignmentモードを必ずAutoに戻す
+#Manual_Align = 0
+'★Manual座標指定値をカメラ中心に戻す
+FOR @a = 0 TO 3
+	#Manual_Pos[@a] = $Img_center[@a]
+NEXT
+#Manual_size = 100
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0027.txt】
+============================================================
+'■Cam番号指定
+@c=0			'Cam番号
+'ManualAlignment用領域で指定した座標を格納
+IF #F_target = 0 THEN
+	#Ave_Pos_target_pix[@c] = #Manual_Pos[@c]
+ELSE IF #F_target = 1 THEN
+	#Ave_Pos_object_pix[@c] = #Manual_Pos[@c]
+END IF
+'ダイアログ確認用に表示
+#Manual_Cam_Disp = @c
+#Manual_Pos_Disp = $Img_center[@c]
+#Manual_AvePos_Disp = #Manual_Pos[@c]
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0029.txt】
+============================================================
+'■Cam番号指定
+@c=0			'Cam番号
+'ManualAlignment判定格納
+#Search_Result[@c] = #Manual_Cancel_flag
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0034.txt】
+============================================================
+'■Cam番号指定
+@c=1			'Cam番号
+'ManualAlignment用領域で指定した座標を格納
+IF #F_target = 0 THEN
+	#Ave_Pos_target_pix[@c] = #Manual_Pos[@c]
+ELSE IF #F_target = 1 THEN
+	#Ave_Pos_object_pix[@c] = #Manual_Pos[@c]
+END IF
+'ダイアログ確認用に表示
+#Manual_Cam_Disp = @c
+#Manual_Pos_Disp = $Img_center[@c]
+#Manual_AvePos_Disp = #Manual_Pos[@c]
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0036.txt】
+============================================================
+'■Cam番号指定
+@c=1			'Cam番号
+'ManualAlignment判定格納
+#Search_Result[@c] = #Manual_Cancel_flag
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0048.txt】
+============================================================
+#target_cam_move_reg_mm[0] =SubVector( #RegMasterPosselec_target_CamXY[0],AsPoint($Stage_CalibrationPos_Cam1[0],$Stage_CalibrationPos_Cam1[1]))
+#target_cam_move_reg_mm[1] =SubVector( #RegMasterPosselec_target_CamXY[1],AsPoint($Stage_CalibrationPos_Cam2[0],$Stage_CalibrationPos_Cam2[1]))
+#object_cam_move_reg_mm[0] =SubVector( #RegMasterPosselec_object_CamXY[0],AsPoint($Stage_CalibrationPos_Cam1[0],$Stage_CalibrationPos_Cam1[1]))
+#object_cam_move_reg_mm[1] =SubVector( #RegMasterPosselec_object_CamXY[1],AsPoint($Stage_CalibrationPos_Cam2[0],$Stage_CalibrationPos_Cam2[1]))
+#target_cam_move_detec_mm[0] =SubVector( #AlignmentPosselec_target_CamXY[0],AsPoint($Stage_CalibrationPos_Cam1[0],$Stage_CalibrationPos_Cam1[1]))
+#target_cam_move_detec_mm[1] =SubVector( #AlignmentPosselec_target_CamXY[1],AsPoint($Stage_CalibrationPos_Cam2[0],$Stage_CalibrationPos_Cam2[1]))
+#object_cam_move_detec_mm[0] =SubVector( #AlignmentPos_object_CamXY[0],AsPoint($Stage_CalibrationPos_Cam1[0],$Stage_CalibrationPos_Cam1[1]))
+#object_cam_move_detec_mm[1] =SubVector( #AlignmentPos_object_CamXY[1],AsPoint($Stage_CalibrationPos_Cam2[0],$Stage_CalibrationPos_Cam2[1]))
+#target_cam_move_reg_pix[0] = SubVector(ConvWldToPix(#target_cam_move_reg_mm[0],$Stage_CalibrationData_Cam1[]),ConvWldToPix(AsPoint( 0,0),$Stage_CalibrationData_Cam1[]))
+#target_cam_move_reg_pix[1] = SubVector(ConvWldToPix(#target_cam_move_reg_mm[1],$Stage_CalibrationData_Cam2[]),ConvWldToPix(AsPoint( 0,0),$Stage_CalibrationData_Cam2[]))
+#object_cam_move_reg_pix[0] = SubVector(ConvWldToPix(#object_cam_move_reg_mm[0],$Stage_CalibrationData_Cam1[]),ConvWldToPix(AsPoint( 0,0),$Stage_CalibrationData_Cam1[]))
+#object_cam_move_reg_pix[1] = SubVector(ConvWldToPix(#object_cam_move_reg_mm[1],$Stage_CalibrationData_Cam2[]),ConvWldToPix(AsPoint( 0,0),$Stage_CalibrationData_Cam2[]))
+#target_cam_move_detec_pix[0] = SubVector(ConvWldToPix(#target_cam_move_detec_mm[0],$Stage_CalibrationData_Cam1[]),ConvWldToPix(AsPoint( 0,0),$Stage_CalibrationData_Cam1[]))
+#target_cam_move_detec_pix[1] = SubVector(ConvWldToPix(#target_cam_move_detec_mm[1],$Stage_CalibrationData_Cam2[]),ConvWldToPix(AsPoint( 0,0),$Stage_CalibrationData_Cam2[]))
+#object_cam_move_detec_pix[0] = SubVector(ConvWldToPix(#object_cam_move_detec_mm[0],$Stage_CalibrationData_Cam1[]),ConvWldToPix(AsPoint( 0,0),$Stage_CalibrationData_Cam1[]))
+#object_cam_move_detec_pix[1] = SubVector(ConvWldToPix(#object_cam_move_detec_mm[1],$Stage_CalibrationData_Cam2[]),ConvWldToPix(AsPoint( 0,0),$Stage_CalibrationData_Cam2[]))
+#AlignmentPos_target_CU[0] = AddVector(#AlignmentPos_target_pix[0],#target_cam_move_detec_pix[0])
+#AlignmentPos_target_CU[1] = AddVector(#AlignmentPos_target_pix[1],#target_cam_move_detec_pix[1])
+#MasterPosSelect_target_CU[0] = AddVector(#MasterPosSelect_target_pix[0],#target_cam_move_reg_pix[0])
+#MasterPosSelect_target_CU[1] = AddVector(#MasterPosSelect_target_pix[1],#target_cam_move_reg_pix[1])
+#AlignmentPos_object_pix_CU[0] = AddVector(#AlignmentPos_object_pix[0],#object_cam_move_detec_pix[0])
+#AlignmentPos_object_pix_CU[1] = AddVector(#AlignmentPos_object_pix[1],#object_cam_move_detec_pix[1])
+#MasterPosSelect_object_pix_CU[0] = AddVector(#MasterPosSelect_object_pix[0],#object_cam_move_reg_pix[0])
+#MasterPosSelect_object_pix_CU[1] = AddVector(#MasterPosSelect_object_pix[1],#object_cam_move_reg_pix[1])
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0049.txt】
+============================================================
+#Diff_target = SubVector(MidXY(#AlignmentPos_target_mm[0],#AlignmentPos_target_mm[1]),MidXY(#RegMasterPos_target_mm[0],#RegMasterPos_target_mm[1]))
+#dX_target = -#Diff_target.X
+#dY_target = #Diff_target.Y
+#dT_target = !U[0101].RSLT.T:MS
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0052.txt】
+============================================================
+'4Cam分合計判定
+#status_out = Max2( 2 , #Search_Result[] )
+ANS = #status_out
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0057.txt】
+============================================================
+'検出位置→基準位置用変数へ受け渡し
+FOR @a=0 TO 1
+	#RegMasterPos_target_pix[@a] = #Ave_Pos_target_pix[@a]
+NEXT
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0059.txt】
+============================================================
+'基準位置登録時の現在座標格納
+'-----Cam軸-----
+#RegMasterPos_target_CamXY[0] = AsPoint( $Cam1_Axis_X , $Cam1_Axis_Y )
+#RegMasterPos_target_CamXY[1] = AsPoint( $Cam2_Axis_X , $Cam2_Axis_Y )
+'---------------------Cam3/4未使用---------------------
+'#RegMasterPos_target_CamXY[2] = AsPoint( $Cam3_Axis_X , $Cam3_Axis_Y )
+'#RegMasterPos_target_CamXY[3] = AsPoint( $Cam4_Axis_X , $Cam4_Axis_Y )
+'-----Stage軸-----
+#RegMasterPos_target_StageXY = AsPoint( $Stage_Axis1 , $Stage_Axis2 )
+#RegMasterPos_target_StageT = $Stage_Axis3
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0060.txt】
+============================================================
+'基準位置登録時の現在座標格納
+'-----Cam軸-----
+#RegMasterPos_target_CamXY[0] = #RegMasterPos_target_CamXY_M[0]
+#RegMasterPos_target_CamXY[1] = #RegMasterPos_target_CamXY_M[0]
+'---------------------Cam3/4未使用---------------------
+'#RegMasterPos_target_CamXY[2] = #RegMasterPos_target_CamXY_M[0]
+'#RegMasterPos_target_CamXY[3] = #RegMasterPos_target_CamXY_M[0]
+'-----Stage軸-----
+#RegMasterPos_target_StageXY = #RegMasterPos_target_StageXY_M
+#RegMasterPos_target_StageT = #RegMasterPos_target_StageT_M
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0062.txt】
+============================================================
+'移動量格納XYθ軸
+	#dXYT_target[0] = 0
+	#dXYT_target[1] = 0
+	#dXYT_target[2] = 0
+'移動量格納3軸
+	#AxisMove_target[0] = 0
+	#AxisMove_target[1] = 0
+	#AxisMove_target[2] = 0
+'移動量格納XYθ軸
+	#dXYT_object[0] = 0
+	#dXYT_object[1] = 0
+	#dXYT_object[2] = 0
+'移動量格納3軸
+	#AxisMove_object[0] = 0
+	#AxisMove_object[1] = 0
+	#AxisMove_object[2] = 0
+'---------------移動量合算後---------------
+'移動量格納XYθ軸
+	#dXYT_Addition[0] = 0
+	#dXYT_Addition[1] = 0
+	#dXYT_Addition[2] = 0
+'移動量格納3軸
+	#AxisMove_Addition[0] = 0
+	#AxisMove_Addition[1] = 0
+	#AxisMove_Addition[2] = 0
+'------基準位置登録時status完了信号------
+#Align_Status = 1
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0068.txt】
+============================================================
+'検出位置→基準位置用変数へ受け渡し
+FOR @a=0 TO 1
+	#AlignmentPos_target_pix[@a] = #Ave_Pos_target_pix[@a]
+NEXT
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0070.txt】
+============================================================
+'Alignment時の現在座標格納
+'-----Cam軸-----
+#AlignmentPos_target_CamXY[0] = AsPoint( $Cam1_Axis_X , $Cam1_Axis_Y )
+#AlignmentPos_target_CamXY[1] = AsPoint( $Cam2_Axis_X , $Cam2_Axis_Y )
+'---------------------Cam3/4未使用---------------------
+'#AlignmentPos_target_CamXY[2] = AsPoint( $Cam3_Axis_X , $Cam3_Axis_Y )
+'#AlignmentPos_target_CamXY[3] = AsPoint( $Cam4_Axis_X , $Cam4_Axis_Y )
+'-----Stage軸-----
+#AlignmentPos_target_StageXY = AsPoint( $Stage_Axis1 , $Stage_Axis2 )
+#AlignmentPos_target_StageT = $Stage_Axis3
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0071.txt】
+============================================================
+'Alignment時の現在座標格納
+'-----Cam軸-----
+#AlignmentPos_target_CamXY[0] = #AlignmentPos_target_CamXY_M[0]
+#AlignmentPos_target_CamXY[1] = #AlignmentPos_target_CamXY_M[1]
+'---------------------Cam3/4未使用---------------------
+'#AlignmentPos_target_CamXY[2] = #AlignmentPos_target_CamXY_M[2]
+'#AlignmentPos_target_CamXY[3] = #AlignmentPos_target_CamXY_M[3]
+'-----Stage軸-----
+#AlignmentPos_target_StageXY = #AlignmentPos_target_StageXY_M
+#AlignmentPos_target_StageT = #AlignmentPos_target_StageT_M
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0076.txt】
+============================================================
+'検出位置→基準位置用変数へ受け渡し
+FOR @a=0 TO 1
+	#RegMasterPos_object_pix[@a] = #Ave_Pos_object_pix[@a]
+NEXT
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0078.txt】
+============================================================
+'基準位置登録時の現在座標格納
+'-----Cam軸-----
+#RegMasterPos_object_CamXY[0] = AsPoint( $Cam1_Axis_X , $Cam1_Axis_Y )
+#RegMasterPos_object_CamXY[1] = AsPoint( $Cam2_Axis_X , $Cam2_Axis_Y )
+'---------------------Cam3/4未使用---------------------
+'#RegMasterPos_object_CamXY[2] = AsPoint( $Cam3_Axis_X , $Cam3_Axis_Y )
+'#RegMasterPos_object_CamXY[3] = AsPoint( $Cam4_Axis_X , $Cam4_Axis_Y )
+'-----Stage軸-----
+#RegMasterPos_object_StageXY = AsPoint( $Stage_Axis1 , $Stage_Axis2 )
+#RegMasterPos_object_StageT = $Stage_Axis3
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0079.txt】
+============================================================
+'基準位置登録時の現在座標格納
+'-----Cam軸-----
+#RegMasterPos_object_CamXY[0] = #RegMasterPos_object_CamXY_M[0]
+#RegMasterPos_object_CamXY[1] = #RegMasterPos_object_CamXY_M[0]
+'---------------------Cam3/4未使用---------------------
+'#RegMasterPos_object_CamXY[2] = #RegMasterPos_object_CamXY_M[0]
+'#RegMasterPos_object_CamXY[3] = #RegMasterPos_object_CamXY_M[0]
+'-----Stage軸-----
+#RegMasterPos_object_StageXY = #RegMasterPos_object_StageXY_M
+#RegMasterPos_object_StageT = #RegMasterPos_object_StageT_M
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0081.txt】
+============================================================
+'移動量格納XYθ軸
+	#dXYT_target[0] = 0
+	#dXYT_target[1] = 0
+	#dXYT_target[2] = 0
+'移動量格納3軸
+	#AxisMove_target[0] = 0
+	#AxisMove_target[1] = 0
+	#AxisMove_target[2] = 0
+'移動量格納XYθ軸
+	#dXYT_object[0] = 0
+	#dXYT_object[1] = 0
+	#dXYT_object[2] = 0
+'移動量格納3軸
+	#AxisMove_object[0] = 0
+	#AxisMove_object[1] = 0
+	#AxisMove_object[2] = 0
+'---------------移動量合算後---------------
+'移動量格納XYθ軸
+	#dXYT_Addition[0] = 0
+	#dXYT_Addition[1] = 0
+	#dXYT_Addition[2] = 0
+'移動量格納3軸
+	#AxisMove_Addition[0] = 0
+	#AxisMove_Addition[1] = 0
+	#AxisMove_Addition[2] = 0
+'------基準位置登録時status完了信号------
+#Align_Status = 1
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0087.txt】
+============================================================
+'検出位置→基準位置用変数へ受け渡し
+FOR @a=0 TO 1
+	#AlignmentPos_object_pix[@a] = #Ave_Pos_object_pix[@a]
+NEXT
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0089.txt】
+============================================================
+'Alignment時の現在座標格納
+'-----Cam軸-----
+#AlignmentPos_object_CamXY[0] = AsPoint( $Cam1_Axis_X , $Cam1_Axis_Y )
+#AlignmentPos_object_CamXY[1] = AsPoint( $Cam2_Axis_X , $Cam2_Axis_Y )
+'---------------------Cam3/4未使用---------------------
+'#AlignmentPos_object_CamXY[2] = AsPoint( $Cam3_Axis_X , $Cam3_Axis_Y )
+'#AlignmentPos_object_CamXY[3] = AsPoint( $Cam4_Axis_X , $Cam4_Axis_Y )
+'-----Stage軸-----
+#AlignmentPos_object_StageXY = AsPoint( $Stage_Axis1 , $Stage_Axis2 )
+#AlignmentPos_object_StageT = $Stage_Axis3
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0090.txt】
+============================================================
+'Alignment時の現在座標格納
+'-----Cam軸-----
+#AlignmentPos_object_CamXY[0] = #AlignmentPos_object_CamXY_M[0]
+#AlignmentPos_object_CamXY[1] = #AlignmentPos_object_CamXY_M[1]
+'---------------------Cam3/4未使用---------------------
+'#AlignmentPos_object_CamXY[2] = #AlignmentPos_object_CamXY_M[2]
+'#AlignmentPos_object_CamXY[3] = #AlignmentPos_object_CamXY_M[3]
+'-----Stage軸-----
+#AlignmentPos_object_StageXY = #AlignmentPos_object_StageXY_M
+#AlignmentPos_object_StageT = #AlignmentPos_object_StageT_M
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0095.txt】
+============================================================
+'移動量格納XYθ軸
+	#dXYT_target[0] = 0
+	#dXYT_target[1] = 0
+	#dXYT_target[2] = 0
+'移動量格納3軸
+	#AxisMove_target[0] = 0
+	#AxisMove_target[1] = 0
+	#AxisMove_target[2] = 0
+'移動量格納XYθ軸
+	#dXYT_object[0] = 0
+	#dXYT_object[1] = 0
+	#dXYT_object[2] = 0
+'移動量格納3軸
+	#AxisMove_object[0] = 0
+	#AxisMove_object[1] = 0
+	#AxisMove_object[2] = 0
+'---------------移動量合算後---------------
+'移動量格納XYθ軸
+	#dXYT_Addition[0] = 0
+	#dXYT_Addition[1] = 0
+	#dXYT_Addition[2] = 0
+'移動量格納3軸
+	#AxisMove_Addition[0] = 0
+	#AxisMove_Addition[1] = 0
+	#AxisMove_Addition[2] = 0
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0100.txt】
+============================================================
+'■検出位置のWld座標格納■
+#AlignmentPos_target_mm[0].X = !U[0096].RSLT.ALP_DPXW:MS
+#AlignmentPos_target_mm[0].Y = !U[0096].RSLT.ALP_DPYW:MS
+#AlignmentPos_target_mm[1].X = !U[0097].RSLT.ALP_DPXW:MS
+#AlignmentPos_target_mm[1].Y = !U[0097].RSLT.ALP_DPYW:MS
+'#AlignmentPos_target_mm[2].X = !U[0098].RSLT.ALP_DPXW:MS
+'#AlignmentPos_target_mm[2].Y = !U[0098].RSLT.ALP_DPYW:MS
+'#AlignmentPos_target_mm[3].X = !U[0099].RSLT.ALP_DPXW:MS
+'#AlignmentPos_target_mm[3].Y = !U[0099].RSLT.ALP_DPYW:MS
+'■基準位置のWld座標格納■
+#RegMasterPos_target_mm[0].X = !U[0096].RSLT.ALP_BXW:MS
+#RegMasterPos_target_mm[0].Y = !U[0096].RSLT.ALP_BYW:MS
+#RegMasterPos_target_mm[1].X = !U[0097].RSLT.ALP_BXW:MS
+#RegMasterPos_target_mm[1].Y = !U[0097].RSLT.ALP_BYW:MS
+'#RegMasterPos_target_mm[2].X = !U[0098].RSLT.ALP_BXW:MS
+'#RegMasterPos_target_mm[2].Y = !U[0098].RSLT.ALP_BYW:MS
+'#RegMasterPos_target_mm[3].X = !U[0099].RSLT.ALP_BXW:MS
+'#RegMasterPos_target_mm[3].Y = !U[0099].RSLT.ALP_BYW:MS
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0102.txt】
+============================================================
+'移動量格納XYθ軸
+	#dXYT_target[0] = !U[0128].RSLT.X:MS * (1)
+	#dXYT_target[1] = !U[0128].RSLT.Y:MS * (1)
+	#dXYT_target[2] = !U[0128].RSLT.T:MS * (1)
+'移動量格納3軸
+	#AxisMove_target[0] = !U[0128].RSLT.AX1:MS * (1)
+	#AxisMove_target[1] = !U[0128].RSLT.AX2:MS * (1)
+	#AxisMove_target[2] = !U[0128].RSLT.AX3:MS * (1)
+'---------------移動量合算後---------------
+'移動量格納XYθ軸
+	#dXYT_Addition[0] = 0
+	#dXYT_Addition[1] = 0
+	#dXYT_Addition[2] = 0
+'移動量格納3軸
+	#AxisMove_Addition[0] = 0
+	#AxisMove_Addition[1] = 0
+	#AxisMove_Addition[2] = 0
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0107.txt】
+============================================================
+'■検出位置のWld座標格納■
+#AlignmentPos_object_mm[0].X = !U[0103].RSLT.ALP_DPXW:MS
+#AlignmentPos_object_mm[0].Y = !U[0103].RSLT.ALP_DPYW:MS
+#AlignmentPos_object_mm[1].X = !U[0104].RSLT.ALP_DPXW:MS
+#AlignmentPos_object_mm[1].Y = !U[0104].RSLT.ALP_DPYW:MS
+'#AlignmentPos_object_mm[2].X = !U[0105].RSLT.ALP_DPXW:MS
+'#AlignmentPos_object_mm[2].Y = !U[0105].RSLT.ALP_DPYW:MS
+'#AlignmentPos_object_mm[3].X = !U[0106].RSLT.ALP_DPXW:MS
+'#AlignmentPos_object_mm[3].Y = !U[0106].RSLT.ALP_DPYW:MS
+'■基準位置のWld座標格納■
+#RegMasterPos_object_mm[0].X = !U[0103].RSLT.ALP_BXW:MS
+#RegMasterPos_object_mm[0].Y = !U[0103].RSLT.ALP_BYW:MS
+#RegMasterPos_object_mm[1].X = !U[0104].RSLT.ALP_BXW:MS
+#RegMasterPos_object_mm[1].Y = !U[0104].RSLT.ALP_BYW:MS
+'#RegMasterPos_object_mm[2].X = !U[0105].RSLT.ALP_BXW:MS
+'#RegMasterPos_object_mm[2].Y = !U[0105].RSLT.ALP_BYW:MS
+'#RegMasterPos_object_mm[3].X = !U[0106].RSLT.ALP_BXW:MS
+'#RegMasterPos_object_mm[3].Y = !U[0106].RSLT.ALP_BYW:MS
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0110.txt】
+============================================================
+'移動量格納3軸
+	#dXYT_object[0] = !U[0130].RSLT.AX1:MS
+	#dXYT_object[1] = !U[0130].RSLT.AX2:MS
+	#dXYT_object[2] = !U[0130].RSLT.AX3:MS
+'---------------移動量合算後---------------
+'移動量格納XYθ軸
+	#dXYT_Addition[0] = !U[0132].RSLT.X:MS + #Calc_Offset_XYT[0]
+	#dXYT_Addition[1] = !U[0132].RSLT.Y:MS + #Calc_Offset_XYT[1]
+	#dXYT_Addition[2] = !U[0132].RSLT.T:MS + #Calc_Offset_XYT[2]
+'移動量格納3軸
+	#AxisMove_Addition[0] = !U[0132].RSLT.AX1:MS + #Axis_offset[0]
+	#AxisMove_Addition[1] = !U[0132].RSLT.AX2:MS + #Axis_offset[1]
+	#AxisMove_Addition[2] = !U[0132].RSLT.AX3:MS + #Axis_offset[2]
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0111.txt】
+============================================================
+'判定公差・閾値設定(Axis1/2/3ではなく、StageX/Y/Tに設定)
+IF #Axis_threshold_XYT[0] > ABS(#dXYT_Addition[0]) AND #Axis_threshold_XYT[1] > ABS(#dXYT_Addition[1]) AND #Axis_threshold_XYT[2] > ABS(#dXYT_Addition[2]) THEN
+	#Align_Status = 1	'完了
+ELSE
+	#Align_Status = 0	'継続
+END IF
+IF #status_out = 1 THEN
+	#Align_Status = 2	'NG表示
+END IF
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0116.txt】
+============================================================
+#Axis_offset[0] = !U[0134].RSLT.AX1:MS
+#Axis_offset[1] = !U[0134].RSLT.AX2:MS
+#Axis_offset[2] = !U[0134].RSLT.AX3:MS
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0117.txt】
+============================================================
+'#dX_target=!U[0101].RSLT.X:MS-!U[0118].RSLT.X:MS
+'#dY_target=-!U[0101].RSLT.Y:MS-!U[0118].RSLT.Y:MS
+'#dX_target=-2*!U[0118].RSLT.X:MS
+'#dY_target=-!U[0118].RSLT.Y:MS
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0119.txt】
+============================================================
+#Ave_pos_target_camAxis[0] = SubVector(ConvPixToWld(#AlignmentPos_target_pix[0],$Camera_CalibrationData_Cam1[]),ConvPixToWld($Img_center[0],$Camera_CalibrationData_Cam1[]))
+#Ave_pos_target_camAxis[0] = AddVector(#Ave_pos_target_camAxis[0],#AlignmentPos_target_CamXY[0])
+#Reg_pos_target_camAxis[0] = #AlignmentPos_target_CamXY[0]
+#Ave_pos_target_camAxis[1] = SubVector(ConvPixToWld(#AlignmentPos_target_pix[1],$Camera_CalibrationData_Cam2[]),ConvPixToWld($Img_center[1],$Camera_CalibrationData_Cam2[]))
+#Ave_pos_target_camAxis[1] = AddVector(#Ave_pos_target_camAxis[1],#AlignmentPos_target_CamXY[1])
+#Reg_pos_target_camAxis[1] = #AlignmentPos_target_CamXY[1]
+#Diff_target = SubVector(MidXY(#Ave_pos_target_camAxis[0],#Ave_pos_target_camAxis[1]),MidXY(#Reg_pos_target_camAxis[0],#Reg_pos_target_camAxis[1]))
+#dX_target = -#Diff_target.X
+#dY_target = #Diff_target.Y
+#dT_target = AngleTrans(AngleTrans(Angle(#Reg_pos_target_camAxis[0],#Reg_pos_target_camAxis[1]),0)-AngleTrans(Angle(#Ave_pos_target_camAxis[0],#Ave_pos_target_camAxis[1]),0),0)
+#Ave_posM_target_camAxis = MidXY(#Ave_pos_target_camAxis[0],#Ave_pos_target_camAxis[1])
+#Reg_posM_target_camAxis = MidXY(#Reg_pos_target_camAxis[0],#Reg_pos_target_camAxis[1])
+#Ave_posMC_target_camAxis=Rotate( #Ave_posM_target_camAxis, AsPoint(0,0), #dT_target, 1)  	'θ補正後位置算出
+#dXYT_target[0] = #Reg_posM_target_camAxis.X - #Ave_posMC_target_camAxis.X				'基準位置との差分を算出
+#dXYT_target[1] = #Reg_posM_target_camAxis.Y - #Ave_posMC_target_camAxis.Y
+#dXYT_target[2] = #dT_target
+#zero[0] = AddVector(AsPoint($RotCenter_Cam1[0],$RotCenter_Cam1[1]),AsPoint(0.01,0.01))
+#zero[1] = AddVector(AsPoint($RotCenter_Cam1[0],$RotCenter_Cam1[1]),AsPoint(0.01,0.01))
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0122.txt】
+============================================================
+'#dT_total = #dT_target + !U[0108].RSLT.T:MS
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0123.txt】
+============================================================
+#Diff_rot.X = Cos(#dT_target)*(-#Diff_target.X)-Sin(#dT_target)*(#Diff_target.Y)
+#Diff_rot.Y = Sin(#dT_target)*(-#Diff_target.X)+Cos(#dT_target)*(#Diff_target.Y)
+#Diff=SubVector(#Diff_rot ,AsPoint(-#Diff_target.X ,#Diff_target.Y ) )
+#dX_target = #dX_target + #Diff.Y
+#dY_target = #dY_target + #Diff.X
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0129.txt】
+============================================================
+#Ave_pos_object_camAxis[0] = SubVector(ConvPixToWld(#AlignmentPos_object_pix[0],$Camera_CalibrationData_Cam1[]),ConvPixToWld($Img_center[0],$Camera_CalibrationData_Cam1[]))
+#Ave_pos_object_camAxis[0] = AddVector(#Ave_pos_object_camAxis[0],#AlignmentPos_object_CamXY[0])
+#Reg_pos_object_camAxis[0] = #AlignmentPos_object_CamXY[0]
+#Ave_pos_object_camAxis[1] = SubVector(ConvPixToWld(#AlignmentPos_object_pix[1],$Camera_CalibrationData_Cam2[]),ConvPixToWld($Img_center[1],$Camera_CalibrationData_Cam2[]))
+#Ave_pos_object_camAxis[1] = AddVector(#Ave_pos_object_camAxis[1],#AlignmentPos_object_CamXY[1])
+#Reg_pos_object_camAxis[1] = #AlignmentPos_object_CamXY[1]
+'#Diff_object = SubVector(MidXY(#Ave_pos_object_camAxis[0],#Ave_pos_object_camAxis[1]),MidXY(#Reg_pos_object_camAxis[0],#Reg_pos_object_camAxis[1]))
+'#dX_object = #Diff_object.X
+'#dY_object = -#Diff_object.Y
+#dT_object = AngleTrans(AngleTrans(Angle(#Reg_pos_object_camAxis[0],#Reg_pos_object_camAxis[1]),0)-AngleTrans(Angle(#Ave_pos_object_camAxis[0],#Ave_pos_object_camAxis[1]),0),0)
+#Ave_posM_object_camAxis = MidXY(#Ave_pos_object_camAxis[0],#Ave_pos_object_camAxis[1])
+#Reg_posM_object_camAxis = MidXY(#Reg_pos_object_camAxis[0],#Reg_pos_object_camAxis[1])
+#Ave_posMC_object_camAxis=Rotate( #Ave_posM_object_camAxis, AsPoint(0,0), #dT_object, 1)  	'θ補正後位置算出
+#dXYT_object[0] = #Reg_posM_object_camAxis.X - #Ave_posMC_object_camAxis.X				'基準位置との差分を算出
+#dXYT_object[1] = #Reg_posM_object_camAxis.Y - #Ave_posMC_object_camAxis.Y
+#dXYT_object[2] = #dT_object
+#dXYT_Addition[2] = #dT_object + #dT_target
+#Ave_posMC_object_camAxis=Rotate( #Ave_posM_object_camAxis, AsPoint(0,0), #dXYT_Addition[2], 1)  	'θ補正後位置算出
+#dXYT_Addition[0] = #Reg_posM_object_camAxis.X - #Ave_posMC_object_camAxis.X - #Diff_target.X
+#dXYT_Addition[1] = #Reg_posM_object_camAxis.Y - #Ave_posMC_object_camAxis.Y + #Diff_target.Y
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0991.txt】
+============================================================
+'撮像パラメータを保持用変数へ格納
+IF #F_Prm_Mode = 0 THEN
+	#SS_Calb[#F_Prm_Cam] = #SS[#F_Prm_Cam]
+	#Sensitive_Calb[#F_Prm_Cam] = #Sensitive[#F_Prm_Cam]
+	#LightVol_1_Calb[#F_Prm_Cam] = #LightVol_1[#F_Prm_Cam]
+	#LightVol_2_Calb[#F_Prm_Cam] = #LightVol_2[#F_Prm_Cam]
+ELSE IF #F_Prm_Mode = 1 THEN
+	#SS_Reg_target[#F_Prm_Cam] = #SS[#F_Prm_Cam]
+	#Sensitive_Reg_target[#F_Prm_Cam] = #Sensitive[#F_Prm_Cam]
+	#LightVol_1_Reg_target[#F_Prm_Cam] = #LightVol_1[#F_Prm_Cam]
+	#LightVol_2_Reg_target[#F_Prm_Cam] = #LightVol_2[#F_Prm_Cam]
+ELSE IF #F_Prm_Mode = 2 THEN
+	#SS_Reg_object[#F_Prm_Cam] = #SS[#F_Prm_Cam]
+	#Sensitive_Reg_object[#F_Prm_Cam] = #Sensitive[#F_Prm_Cam]
+	#LightVol_1_Reg_object[#F_Prm_Cam] = #LightVol_1[#F_Prm_Cam]
+	#LightVol_2_Reg_object[#F_Prm_Cam] = #LightVol_2[#F_Prm_Cam]
+ELSE IF #F_Prm_Mode = 3 THEN
+	#SS_Align_target[#F_Prm_Cam] = #SS[#F_Prm_Cam]
+	#Sensitive_Align_target[#F_Prm_Cam] = #Sensitive[#F_Prm_Cam]
+	#LightVol_1_Align_target[#F_Prm_Cam] = #LightVol_1[#F_Prm_Cam]
+	#LightVol_2_Align_target[#F_Prm_Cam] = #LightVol_2[#F_Prm_Cam]
+ELSE IF #F_Prm_Mode = 4 THEN
+	#SS_Align_object[#F_Prm_Cam] = #SS[#F_Prm_Cam]
+	#Sensitive_Align_object[#F_Prm_Cam] = #Sensitive[#F_Prm_Cam]
+	#LightVol_1_Align_object[#F_Prm_Cam] = #LightVol_1[#F_Prm_Cam]
+	#LightVol_2_Align_object[#F_Prm_Cam] = #LightVol_2[#F_Prm_Cam]
+END IF
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0992.txt】
+============================================================
+'撮像パラメータを保持用変数から読み出し
+IF #F_Prm_Mode = 0 THEN
+	#SS[#F_Prm_Cam] = #SS_Calb[#F_Prm_Cam]
+	#Sensitive[#F_Prm_Cam] = #Sensitive_Calb[#F_Prm_Cam]
+	#LightVol_1[#F_Prm_Cam] = #LightVol_1_Calb[#F_Prm_Cam]
+	#LightVol_2[#F_Prm_Cam] = #LightVol_2_Calb[#F_Prm_Cam]
+ELSE IF #F_Prm_Mode = 1 THEN
+	#SS[#F_Prm_Cam] = #SS_Reg_target[#F_Prm_Cam]
+	#Sensitive[#F_Prm_Cam] = #Sensitive_Reg_target[#F_Prm_Cam]
+	#LightVol_1[#F_Prm_Cam] = #LightVol_1_Reg_target[#F_Prm_Cam]
+	#LightVol_2[#F_Prm_Cam] = #LightVol_2_Reg_target[#F_Prm_Cam]
+ELSE IF #F_Prm_Mode = 1 THEN
+	#SS[#F_Prm_Cam] = #SS_Reg_object[#F_Prm_Cam]
+	#Sensitive[#F_Prm_Cam] = #Sensitive_Reg_object[#F_Prm_Cam]
+	#LightVol_1[#F_Prm_Cam] = #LightVol_1_Reg_object[#F_Prm_Cam]
+	#LightVol_2[#F_Prm_Cam] = #LightVol_2_Reg_object[#F_Prm_Cam]
+ELSE IF #F_Prm_Mode = 3 THEN
+	#SS[#F_Prm_Cam] = #SS_Align_target[#F_Prm_Cam]
+	#Sensitive[#F_Prm_Cam] = #Sensitive_Align_target[#F_Prm_Cam]
+	#LightVol_1[#F_Prm_Cam] = #LightVol_1_Align_target[#F_Prm_Cam]
+	#LightVol_2[#F_Prm_Cam] = #LightVol_2_Align_target[#F_Prm_Cam]
+ELSE IF #F_Prm_Mode = 4 THEN
+	#SS[#F_Prm_Cam] = #SS_Align_object[#F_Prm_Cam]
+	#Sensitive[#F_Prm_Cam] = #Sensitive_Align_object[#F_Prm_Cam]
+	#LightVol_1[#F_Prm_Cam] = #LightVol_1_Align_object[#F_Prm_Cam]
+	#LightVol_2[#F_Prm_Cam] = #LightVol_2_Align_object[#F_Prm_Cam]
+END IF
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0993.txt】
+============================================================
+'撮像パラメータを保持用変数から読み出し
+'一括書換用
+IF #Main_Mode = 0 THEN
+	@x = 0
+ELSE
+	@x = #Main_Mode * 10 + #F_target
+END IF 
+IF @x = 0 THEN
+	FOR @a=0 TO 3
+		#SS[@a] = #SS_Calb[@a]
+		#Sensitive[@a] = #Sensitive_Calb[@a]
+		#LightVol_1[@a] = #LightVol_1_Calb[@a]
+		#LightVol_2[@a] = #LightVol_2_Calb[@a]
+	NEXT
+ELSE IF @x = 10 THEN
+	FOR  @a=0 TO 3
+		#SS[@a] = #SS_Reg_target[@a]
+		#Sensitive[@a] = #Sensitive_Reg_target[@a]
+		#LightVol_1[@a] = #LightVol_1_Reg_target[@a]
+		#LightVol_2[@a] = #LightVol_2_Reg_target[@a]		
+	NEXT
+ELSE IF @x = 11 THEN
+	FOR  @a=0 TO 3
+		#SS[@a] = #SS_Reg_object[@a]
+		#Sensitive[@a] = #Sensitive_Reg_object[@a]
+		#LightVol_1[@a] = #LightVol_1_Reg_object[@a]
+		#LightVol_2[@a] = #LightVol_2_Reg_object[@a]
+	NEXT
+ELSE IF @x = 20 THEN
+	FOR @a=0 TO 3
+		#SS[@a] = #SS_Align_target[@a]
+		#Sensitive[@a] = #Sensitive_Align_target[@a]
+		#LightVol_1[@a] = #LightVol_1_Align_target[@a]
+		#LightVol_2[@a] = #LightVol_2_Align_target[@a]
+	NEXT
+ELSE IF @x = 21 THEN
+	FOR @a=0 TO 3
+		#SS[@a] = #SS_Align_object[@a]
+		#Sensitive[@a] = #Sensitive_Align_object[@a]
+		#LightVol_1[@a] = #LightVol_1_Align_object[@a]
+		#LightVol_2[@a] = #LightVol_2_Align_object[@a]
+	NEXT
+END IF
+
+
+============================================================
+【unit_0000_R0109_20260602_153304_MTX0994.txt】
+============================================================
+'Stage現在座標書き込み
+$Stage_Axis1 = #CC_Prm[0]
+$Stage_Axis2 = #CC_Prm[1]
+$Stage_Axis3 = #CC_Prm[2]
+'Cam現在座標書き込み
+$Cam1_Axis_X = #CC_Prm[3]
+$Cam1_Axis_Y = #CC_Prm[4]
+$Cam2_Axis_X = #CC_Prm[5]
+$Cam2_Axis_Y = #CC_Prm[6]
+$Cam3_Axis_X = #CC_Prm[7]
+$Cam3_Axis_Y = #CC_Prm[8]
+$Cam4_Axis_X = #CC_Prm[9]
+$Cam4_Axis_Y = #CC_Prm[10]
+
+
