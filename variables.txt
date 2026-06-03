@@ -1,1 +1,589 @@
 
+Name	Type	Quantity	Initialize on reset	Copy current value to initial value at save	Keep initial value when loading program	Recipe Target	Comment	R0009
+#Main_Mode	スカラ		1	0	0	0	0:Calibration　1:RegMasterPos　2:Alignment	2
+#Calib_Mode	スカラ		1	0	0	0	0:StageCalibration 1:CamCalibration	0
+#Manual_Align	スカラ		1	0	0	0	1:ManualAlignMode	0
+#Manual_Pos[0].X	位置配列	4	1	0	0	0	ManualAlignment用座標指定　要素：カメラ番号	800
+#Manual_Pos[0].Y	位置配列	4	1	0	0	0		600
+#Manual_Pos[1].X	位置配列	4	1	0	0	0		800
+#Manual_Pos[1].Y	位置配列	4	1	0	0	0		600
+#Manual_Pos[2].X	位置配列	4	1	0	0	0		800
+#Manual_Pos[2].Y	位置配列	4	1	0	0	0		600
+#Manual_Pos[3].X	位置配列	4	1	0	0	0		800
+#Manual_Pos[3].Y	位置配列	4	1	0	0	0		600
+#Manual_Cam_Disp	スカラ		1	0	0	0	ManualAlignment用座標指定のCam番号表示用	0
+#Manual_Pos_Disp.X	位置		1	0	0	0	ManualAlignment用座標指定の初期値表示用	0
+#Manual_Pos_Disp.Y	位置		1	0	0	0		0
+#Manual_Cancel_flag	スカラ		1	0	0	0	ManualAlignmentキャンセルフラグ	0
+#Manual_AvePos_Disp.X	位置		1	0	0	0	ManualAlignment用座標指定の現在値表示用	0
+#Manual_AvePos_Disp.Y	位置		1	0	0	0		0
+#Manual_size	スカラ		1	0	0	0	ManualAlignment用サイズ指定	0
+#Manual_cam[0]	スカラ配列	4	1	0	0	0	ManualAlignment用Cam指定　要素：カメラ番号	0
+#Manual_cam[1]	スカラ配列	4	1	0	0	0		0
+#Manual_cam[2]	スカラ配列	4	1	0	0	0		0
+#Manual_cam[3]	スカラ配列	4	1	0	0	0		0
+#F_target	スカラ		1	0	0	0	0:Aside 1:Bside	0
+#F_Live	スカラ		1	1	1	0	0:Trg更新　1:連続更新	1
+#F_Prm_Mode	スカラ		1	0	0	0	撮像パラメータ反映用（Mode選択）	0
+#F_Prm_Cam	スカラ		1	0	0	0	撮像パラメータ反映用（Cam選択）	0
+#F_Auto	スカラ		1	0	0	0	座標指定方法　0:Auto　1:Manual	0
+#Search_Result[0]	スカラ配列	4	1	0	0	0	0:OK 1:NG	0
+#Search_Result[1]	スカラ配列	4	1	0	0	0		0
+#Search_Result[2]	スカラ配列	4	1	0	0	0		0
+#Search_Result[3]	スカラ配列	4	1	0	0	0		0
+#CalibrationPos_pix[0].X	位置配列	4	1	0	0	0	キャリブレーション位置格納_Pix	0
+#CalibrationPos_pix[0].Y	位置配列	4	1	0	0	0		0
+#CalibrationPos_pix[1].X	位置配列	4	1	0	0	0		0
+#CalibrationPos_pix[1].Y	位置配列	4	1	0	0	0		0
+#CalibrationPos_pix[2].X	位置配列	4	1	0	0	0		0
+#CalibrationPos_pix[2].Y	位置配列	4	1	0	0	0		0
+#CalibrationPos_pix[3].X	位置配列	4	1	0	0	0		0
+#CalibrationPos_pix[3].Y	位置配列	4	1	0	0	0		0
+#Ave_Pos_target_pix[0].X	位置配列	4	1	0	0	0	検出点格納_Pix　要素：カメラ番号	0
+#Ave_Pos_target_pix[0].Y	位置配列	4	1	0	0	0		0
+#Ave_Pos_target_pix[1].X	位置配列	4	1	0	0	0		0
+#Ave_Pos_target_pix[1].Y	位置配列	4	1	0	0	0		0
+#Ave_Pos_target_pix[2].X	位置配列	4	1	0	0	0		0
+#Ave_Pos_target_pix[2].Y	位置配列	4	1	0	0	0		0
+#Ave_Pos_target_pix[3].X	位置配列	4	1	0	0	0		0
+#Ave_Pos_target_pix[3].Y	位置配列	4	1	0	0	0		0
+#MasterPosSelect_target_pix[0].X	位置配列	4	1	1	1	1	選択基準位置_Pix　要素：カメラ番号	800
+#MasterPosSelect_target_pix[0].Y	位置配列	4	1	1	1	1		600
+#MasterPosSelect_target_pix[1].X	位置配列	4	1	1	1	1		800
+#MasterPosSelect_target_pix[1].Y	位置配列	4	1	1	1	1		600
+#MasterPosSelect_target_pix[2].X	位置配列	4	1	1	1	1		800
+#MasterPosSelect_target_pix[2].Y	位置配列	4	1	1	1	1		600
+#MasterPosSelect_target_pix[3].X	位置配列	4	1	1	1	1		800
+#MasterPosSelect_target_pix[3].Y	位置配列	4	1	1	1	1		600
+#MasterPosSelect_target_CU[0].X	位置配列	4	1	1	1	1	選択基準位置_Pix　要素：カメラ番号	8344.23443
+#MasterPosSelect_target_CU[0].Y	位置配列	4	1	1	1	1		-484.757668
+#MasterPosSelect_target_CU[1].X	位置配列	4	1	1	1	1		-38715.07012
+#MasterPosSelect_target_CU[1].Y	位置配列	4	1	1	1	1		47193.28314
+#MasterPosSelect_target_CU[2].X	位置配列	4	1	1	1	1		960.522919
+#MasterPosSelect_target_CU[2].Y	位置配列	4	1	1	1	1		563.662079
+#MasterPosSelect_target_CU[3].X	位置配列	4	1	1	1	1		1056.401901
+#MasterPosSelect_target_CU[3].Y	位置配列	4	1	1	1	1		580.796829
+#RegMasterPos_target_pix[0].X	位置配列	4	1	1	1	1	登録基準位置_Pix　要素：カメラ番号	996.994091
+#RegMasterPos_target_pix[0].Y	位置配列	4	1	1	1	1		588.811292
+#RegMasterPos_target_pix[1].X	位置配列	4	1	1	1	1		741.700467
+#RegMasterPos_target_pix[1].Y	位置配列	4	1	1	1	1		567.516258
+#RegMasterPos_target_pix[2].X	位置配列	4	1	1	1	1		960.522919
+#RegMasterPos_target_pix[2].Y	位置配列	4	1	1	1	1		563.662079
+#RegMasterPos_target_pix[3].X	位置配列	4	1	1	1	1		1056.401901
+#RegMasterPos_target_pix[3].Y	位置配列	4	1	1	1	1		580.796829
+#AlignmentPos_target_pix[0].X	位置配列	4	1	0	0	0	Alignment位置格納_Pix　要素：カメラ番号	0
+#AlignmentPos_target_pix[0].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_pix[1].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_pix[1].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_pix[2].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_pix[2].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_pix[3].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_pix[3].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CU[0].X	位置配列	4	1	0	0	0	Alignment位置格納_Pix　要素：カメラ番号	0
+#AlignmentPos_target_CU[0].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CU[1].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CU[1].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CU[2].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CU[2].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CU[3].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CU[3].Y	位置配列	4	1	0	0	0		0
+#RegMasterPos_target_mm[0].X	位置配列	4	1	1	1	0	基準位置格納_mm　要素：カメラ番号	-147.234498
+#RegMasterPos_target_mm[0].Y	位置配列	4	1	1	1	0		224.229343
+#RegMasterPos_target_mm[1].X	位置配列	4	1	1	1	0		-141.457194
+#RegMasterPos_target_mm[1].Y	位置配列	4	1	1	1	0		-209.672884
+#RegMasterPos_target_mm[2].X	位置配列	4	1	1	1	0		-40.588637
+#RegMasterPos_target_mm[2].Y	位置配列	4	1	1	1	0		-111.080417
+#RegMasterPos_target_mm[3].X	位置配列	4	1	1	1	0		44.094713
+#RegMasterPos_target_mm[3].Y	位置配列	4	1	1	1	0		-112.469841
+#AlignmentPos_target_mm[0].X	位置配列	4	1	0	0	1	Alignment位置格納_mm　要素：カメラ番号	0
+#AlignmentPos_target_mm[0].Y	位置配列	4	1	0	0	1		0
+#AlignmentPos_target_mm[1].X	位置配列	4	1	0	0	1		0
+#AlignmentPos_target_mm[1].Y	位置配列	4	1	0	0	1		0
+#AlignmentPos_target_mm[2].X	位置配列	4	1	0	0	1		0
+#AlignmentPos_target_mm[2].Y	位置配列	4	1	0	0	1		0
+#AlignmentPos_target_mm[3].X	位置配列	4	1	0	0	1		0
+#AlignmentPos_target_mm[3].Y	位置配列	4	1	0	0	1		0
+#RegMasterPos_target_CamXY[0].X	位置配列	4	1	1	1	1	基準位置登録：Cam座標　要素：カメラ番号	-210
+#RegMasterPos_target_CamXY[0].Y	位置配列	4	1	1	1	1		220
+#RegMasterPos_target_CamXY[1].X	位置配列	4	1	1	1	1		-210
+#RegMasterPos_target_CamXY[1].Y	位置配列	4	1	1	1	1		-214
+#RegMasterPos_target_CamXY[2].X	位置配列	4	1	1	1	1		89.9
+#RegMasterPos_target_CamXY[2].Y	位置配列	4	1	1	1	1		179.15
+#RegMasterPos_target_CamXY[3].X	位置配列	4	1	1	1	1		0
+#RegMasterPos_target_CamXY[3].Y	位置配列	4	1	1	1	1		179.15
+#RegMasterPos_target_StageXY.X	位置		1	1	1	1	基準位置登録：Stage座標	0
+#RegMasterPos_target_StageXY.Y	位置		1	1	1	1		0
+#RegMasterPos_target_StageT	スカラ		1	1	1	1	基準位置登録：Stage座標	0
+#RegMasterPos_target_CamXY_M[0].X	位置配列	4	1	1	1	1	マニュアル指定　基準位置登録：Cam座標　要素：カメラ番号	0
+#RegMasterPos_target_CamXY_M[0].Y	位置配列	4	1	1	1	1		0
+#RegMasterPos_target_CamXY_M[1].X	位置配列	4	1	1	1	1		0
+#RegMasterPos_target_CamXY_M[1].Y	位置配列	4	1	1	1	1		0
+#RegMasterPos_target_CamXY_M[2].X	位置配列	4	1	1	1	1		0
+#RegMasterPos_target_CamXY_M[2].Y	位置配列	4	1	1	1	1		0
+#RegMasterPos_target_CamXY_M[3].X	位置配列	4	1	1	1	1		0
+#RegMasterPos_target_CamXY_M[3].Y	位置配列	4	1	1	1	1		0
+#RegMasterPos_target_StageXY_M.X	位置		1	1	1	1	マニュアル指定　基準位置登録：Stage座標	0
+#RegMasterPos_target_StageXY_M.Y	位置		1	1	1	1		0
+#RegMasterPos_target_StageT_M	スカラ		1	1	1	1	マニュアル指定　基準位置登録：Stage座標	0
+#AlignmentPos_target_CamXY[0].X	位置配列	4	1	0	0	0	Alignment：Cam座標　要素：カメラ番号	0
+#AlignmentPos_target_CamXY[0].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CamXY[1].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CamXY[1].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CamXY[2].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CamXY[2].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CamXY[3].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CamXY[3].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_StageXY.X	位置		1	0	0	0	Alignment：Stage座標	0
+#AlignmentPos_target_StageXY.Y	位置		1	0	0	0		0
+#AlignmentPos_target_StageT	スカラ		1	0	0	0	Alignment：Stage座標	0
+#AlignmentPos_target_CamXY_M[0].X	位置配列	4	1	0	0	0	マニュアル指定　Alignment：Cam座標　要素：カメラ番号	0
+#AlignmentPos_target_CamXY_M[0].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CamXY_M[1].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CamXY_M[1].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CamXY_M[2].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CamXY_M[2].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CamXY_M[3].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_CamXY_M[3].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_target_StageXY_M.X	位置		1	0	0	0	マニュアル指定　Alignment：Stage座標	0
+#AlignmentPos_target_StageXY_M.Y	位置		1	0	0	0		0
+#AlignmentPos_target_StageT_M	スカラ		1	0	0	0	マニュアル指定　Alignment：Stage座標	0
+#Ave_Pos_object_pix[0].X	位置配列	4	1	0	0	0	検出点格納_Pix　要素：カメラ番号	0
+#Ave_Pos_object_pix[0].Y	位置配列	4	1	0	0	0		0
+#Ave_Pos_object_pix[1].X	位置配列	4	1	0	0	0		0
+#Ave_Pos_object_pix[1].Y	位置配列	4	1	0	0	0		0
+#Ave_Pos_object_pix[2].X	位置配列	4	1	0	0	0		0
+#Ave_Pos_object_pix[2].Y	位置配列	4	1	0	0	0		0
+#Ave_Pos_object_pix[3].X	位置配列	4	1	0	0	0		0
+#Ave_Pos_object_pix[3].Y	位置配列	4	1	0	0	0		0
+#MasterPosSelect_object_pix[0].X	位置配列	4	1	1	1	0	選択基準位置_Pix　要素：カメラ番号	800
+#MasterPosSelect_object_pix[0].Y	位置配列	4	1	1	1	0		600
+#MasterPosSelect_object_pix[1].X	位置配列	4	1	1	1	0		800
+#MasterPosSelect_object_pix[1].Y	位置配列	4	1	1	1	0		600
+#MasterPosSelect_object_pix[2].X	位置配列	4	1	1	1	0		800
+#MasterPosSelect_object_pix[2].Y	位置配列	4	1	1	1	0		600
+#MasterPosSelect_object_pix[3].X	位置配列	4	1	1	1	0		800
+#MasterPosSelect_object_pix[3].Y	位置配列	4	1	1	1	0		600
+#RegMasterPos_object_pix[0].X	位置配列	4	1	1	1	1	登録基準位置_Pix　要素：カメラ番号	785.471826
+#RegMasterPos_object_pix[0].Y	位置配列	4	1	1	1	1		525.566312
+#RegMasterPos_object_pix[1].X	位置配列	4	1	1	1	1		815.648993
+#RegMasterPos_object_pix[1].Y	位置配列	4	1	1	1	1		600.256797
+#RegMasterPos_object_pix[2].X	位置配列	4	1	1	1	1		839.478287
+#RegMasterPos_object_pix[2].Y	位置配列	4	1	1	1	1		597.035492
+#RegMasterPos_object_pix[3].X	位置配列	4	1	1	1	1		793.008072
+#RegMasterPos_object_pix[3].Y	位置配列	4	1	1	1	1		596.948364
+#AlignmentPos_object_pix[0].X	位置配列	4	1	0	0	0	Alignment位置格納_Pix　要素：カメラ番号	0
+#AlignmentPos_object_pix[0].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_pix[1].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_pix[1].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_pix[2].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_pix[2].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_pix[3].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_pix[3].Y	位置配列	4	1	0	0	0		0
+#RegMasterPos_object_mm[0].X	位置配列	4	1	1	1	1	基準位置格納_mm　要素：カメラ番号	-147.234498
+#RegMasterPos_object_mm[0].Y	位置配列	4	1	1	1	1		224.229343
+#RegMasterPos_object_mm[1].X	位置配列	4	1	1	1	1		-141.457194
+#RegMasterPos_object_mm[1].Y	位置配列	4	1	1	1	1		-209.672884
+#RegMasterPos_object_mm[2].X	位置配列	4	1	1	1	1		-40.819837
+#RegMasterPos_object_mm[2].Y	位置配列	4	1	1	1	1		-65.170592
+#RegMasterPos_object_mm[3].X	位置配列	4	1	1	1	1		41.698995
+#RegMasterPos_object_mm[3].Y	位置配列	4	1	1	1	1		-66.368974
+#AlignmentPos_object_mm[0].X	位置配列	4	1	0	0	0	Alignment位置格納_mm　要素：カメラ番号	0
+#AlignmentPos_object_mm[0].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_mm[1].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_mm[1].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_mm[2].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_mm[2].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_mm[3].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_mm[3].Y	位置配列	4	1	0	0	0		0
+#RegMasterPos_object_CamXY[0].X	位置配列	4	1	1	1	1	基準位置登録：Cam座標　要素：カメラ番号	-210
+#RegMasterPos_object_CamXY[0].Y	位置配列	4	1	1	1	1		220
+#RegMasterPos_object_CamXY[1].X	位置配列	4	1	1	1	1		-210
+#RegMasterPos_object_CamXY[1].Y	位置配列	4	1	1	1	1		-218
+#RegMasterPos_object_CamXY[2].X	位置配列	4	1	1	1	1		88.908
+#RegMasterPos_object_CamXY[2].Y	位置配列	4	1	1	1	1		132.794
+#RegMasterPos_object_CamXY[3].X	位置配列	4	1	1	1	1		0
+#RegMasterPos_object_CamXY[3].Y	位置配列	4	1	1	1	1		132.794
+#RegMasterPos_object_StageXY.X	位置		1	1	1	1	基準位置登録：Stage座標	1.9749
+#RegMasterPos_object_StageXY.Y	位置		1	1	1	1		-2.4735
+#RegMasterPos_object_StageT	スカラ		1	1	1	1	基準位置登録：Stage座標	5.4445
+#RegMasterPos_object_CamXY_M[0].X	位置配列	4	1	1	1	1	マニュアル指定　基準位置登録：Cam座標　要素：カメラ番号	0
+#RegMasterPos_object_CamXY_M[0].Y	位置配列	4	1	1	1	1		0
+#RegMasterPos_object_CamXY_M[1].X	位置配列	4	1	1	1	1		0
+#RegMasterPos_object_CamXY_M[1].Y	位置配列	4	1	1	1	1		0
+#RegMasterPos_object_CamXY_M[2].X	位置配列	4	1	1	1	1		0
+#RegMasterPos_object_CamXY_M[2].Y	位置配列	4	1	1	1	1		0
+#RegMasterPos_object_CamXY_M[3].X	位置配列	4	1	1	1	1		0
+#RegMasterPos_object_CamXY_M[3].Y	位置配列	4	1	1	1	1		0
+#RegMasterPos_object_StageXY_M.X	位置		1	1	1	1	マニュアル指定　基準位置登録：Stage座標	0
+#RegMasterPos_object_StageXY_M.Y	位置		1	1	1	1		0
+#RegMasterPos_object_StageT_M	スカラ		1	1	1	1	マニュアル指定　基準位置登録：Stage座標	0
+#AlignmentPos_object_CamXY[0].X	位置配列	4	1	0	0	0	Alignment：Cam座標　要素：カメラ番号	0
+#AlignmentPos_object_CamXY[0].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_CamXY[1].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_CamXY[1].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_CamXY[2].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_CamXY[2].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_CamXY[3].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_CamXY[3].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_StageXY.X	位置		1	0	0	0	Alignment：Stage座標	0
+#AlignmentPos_object_StageXY.Y	位置		1	0	0	0		0
+#AlignmentPos_object_StageT	スカラ		1	0	0	0	Alignment：Stage座標	0
+#AlignmentPos_object_CamXY_M[0].X	位置配列	4	1	0	0	0	マニュアル指定　Alignment：Cam座標　要素：カメラ番号	0
+#AlignmentPos_object_CamXY_M[0].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_CamXY_M[1].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_CamXY_M[1].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_CamXY_M[2].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_CamXY_M[2].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_CamXY_M[3].X	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_CamXY_M[3].Y	位置配列	4	1	0	0	0		0
+#AlignmentPos_object_StageXY_M.X	位置		1	0	0	0	マニュアル指定　Alignment：Stage座標	0
+#AlignmentPos_object_StageXY_M.Y	位置		1	0	0	0		0
+#AlignmentPos_object_StageT_M	スカラ		1	0	0	0	マニュアル指定　Alignment：Stage座標	0
+#Align_Status	スカラ		1	0	0	0	AlignmentStatus　0：継続　1：完了　2：失敗	0
+#Axis_threshold_XYT[0]	スカラ配列	3	1	1	1	1	XYT方向閾値：Axis補正量閾値　要素：軸	0.01
+#Axis_threshold_XYT[1]	スカラ配列	3	1	1	1	1		0.01
+#Axis_threshold_XYT[2]	スカラ配列	3	1	1	1	1		0.01
+#Calc_Offset_XYT[0]	スカラ配列	3	1	1	1	1	XYT方向演算オフセット　要素：軸	-0.6
+#Calc_Offset_XYT[1]	スカラ配列	3	1	1	1	1		-0.6
+#Calc_Offset_XYT[2]	スカラ配列	3	1	1	1	1		0
+#status_out	スカラ		1	0	0	0	ステータス信号　要素：カメラ場号	0
+#dXYT_target[0]	スカラ配列	3	1	0	0	0	補正量XYT　Aside　要素：軸	0
+#dXYT_target[1]	スカラ配列	3	1	0	0	0		0
+#dXYT_target[2]	スカラ配列	3	1	0	0	0		0
+#AxisMove_target[0]	スカラ配列	3	1	0	0	0	補正量3軸　Aside　要素：軸	0
+#AxisMove_target[1]	スカラ配列	3	1	0	0	0		0
+#AxisMove_target[2]	スカラ配列	3	1	0	0	0		0
+#dXYT_object[0]	スカラ配列	3	1	0	0	0	補正量XYT　Aside　要素：軸	0
+#dXYT_object[1]	スカラ配列	3	1	0	0	0		0
+#dXYT_object[2]	スカラ配列	3	1	0	0	0		0
+#AxisMove_object[0]	スカラ配列	3	1	0	0	0	補正量3軸　Aside　要素：軸	0
+#AxisMove_object[1]	スカラ配列	3	1	0	0	0		0
+#AxisMove_object[2]	スカラ配列	3	1	0	0	0		0
+#dXYT_Addition[0]	スカラ配列	3	1	0	0	0	補正量XYT　Aside　要素：軸	0
+#dXYT_Addition[1]	スカラ配列	3	1	0	0	0		0
+#dXYT_Addition[2]	スカラ配列	3	1	0	0	0		0
+#AxisMove_Addition[0]	スカラ配列	3	1	0	0	0	補正量3軸　Aside　要素：軸	0
+#AxisMove_Addition[1]	スカラ配列	3	1	0	0	0		0
+#AxisMove_Addition[2]	スカラ配列	3	1	0	0	0		0
+#SS[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：シャッタースピード	5
+#SS[1]	スカラ配列	4	1	1	1	1		9.05
+#SS[2]	スカラ配列	4	1	1	1	1		1
+#SS[3]	スカラ配列	4	1	1	1	1		1
+#Sensitive[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：カメラ感度	1
+#Sensitive[1]	スカラ配列	4	1	1	1	1		1
+#Sensitive[2]	スカラ配列	4	1	1	1	1		1
+#Sensitive[3]	スカラ配列	4	1	1	1	1		1
+#LightVol_1[0]	スカラ配列	4	1	1	1	0	撮像ユニット用：照明Vol1	0
+#LightVol_1[1]	スカラ配列	4	1	1	1	0		511
+#LightVol_1[2]	スカラ配列	4	1	1	1	0		200
+#LightVol_1[3]	スカラ配列	4	1	1	1	0		150
+#LightVol_2[0]	スカラ配列	4	1	1	1	0	撮像ユニット用：照明Vol2	300
+#LightVol_2[1]	スカラ配列	4	1	1	1	0		300
+#LightVol_2[2]	スカラ配列	4	1	1	1	0		300
+#LightVol_2[3]	スカラ配列	4	1	1	1	0		300
+#SS_Calb[0]	スカラ配列	4	1	1	1	0	撮像ユニット用：シャッタースピード	0.05
+#SS_Calb[1]	スカラ配列	4	1	1	1	0		0.1
+#SS_Calb[2]	スカラ配列	4	1	1	1	0		1
+#SS_Calb[3]	スカラ配列	4	1	1	1	0		1
+#Sensitive_Calb[0]	スカラ配列	4	1	1	1	0	撮像ユニット用：カメラ感度	1
+#Sensitive_Calb[1]	スカラ配列	4	1	1	1	0		1
+#Sensitive_Calb[2]	スカラ配列	4	1	1	1	0		1
+#Sensitive_Calb[3]	スカラ配列	4	1	1	1	0		1
+#LightVol_1_Calb[0]	スカラ配列	4	1	1	1	0	撮像ユニット用：照明Vol1	0
+#LightVol_1_Calb[1]	スカラ配列	4	1	1	1	0		511
+#LightVol_1_Calb[2]	スカラ配列	4	1	1	1	0		200
+#LightVol_1_Calb[3]	スカラ配列	4	1	1	1	0		150
+#LightVol_2_Calb[0]	スカラ配列	4	1	1	1	0	撮像ユニット用：照明Vol2	300
+#LightVol_2_Calb[1]	スカラ配列	4	1	1	1	0		300
+#LightVol_2_Calb[2]	スカラ配列	4	1	1	1	0		300
+#LightVol_2_Calb[3]	スカラ配列	4	1	1	1	0		300
+#SS_Reg_target[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：シャッタースピード	0.1
+#SS_Reg_target[1]	スカラ配列	4	1	1	1	1		0.1
+#SS_Reg_target[2]	スカラ配列	4	1	1	1	1		1
+#SS_Reg_target[3]	スカラ配列	4	1	1	1	1		1
+#Sensitive_Reg_target[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：カメラ感度	1
+#Sensitive_Reg_target[1]	スカラ配列	4	1	1	1	1		1
+#Sensitive_Reg_target[2]	スカラ配列	4	1	1	1	1		1
+#Sensitive_Reg_target[3]	スカラ配列	4	1	1	1	1		1
+#LightVol_1_Reg_target[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：照明Vol1	0
+#LightVol_1_Reg_target[1]	スカラ配列	4	1	1	1	1		511
+#LightVol_1_Reg_target[2]	スカラ配列	4	1	1	1	1		200
+#LightVol_1_Reg_target[3]	スカラ配列	4	1	1	1	1		180
+#LightVol_2_Reg_target[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：照明Vol2	300
+#LightVol_2_Reg_target[1]	スカラ配列	4	1	1	1	1		300
+#LightVol_2_Reg_target[2]	スカラ配列	4	1	1	1	1		300
+#LightVol_2_Reg_target[3]	スカラ配列	4	1	1	1	1		300
+#SS_Reg_object[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：シャッタースピード	0.1
+#SS_Reg_object[1]	スカラ配列	4	1	1	1	1		0.1
+#SS_Reg_object[2]	スカラ配列	4	1	1	1	1		1
+#SS_Reg_object[3]	スカラ配列	4	1	1	1	1		1
+#Sensitive_Reg_object[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：カメラ感度	1
+#Sensitive_Reg_object[1]	スカラ配列	4	1	1	1	1		1
+#Sensitive_Reg_object[2]	スカラ配列	4	1	1	1	1		1
+#Sensitive_Reg_object[3]	スカラ配列	4	1	1	1	1		1
+#LightVol_1_Reg_object[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：照明Vol1	0
+#LightVol_1_Reg_object[1]	スカラ配列	4	1	1	1	1		511
+#LightVol_1_Reg_object[2]	スカラ配列	4	1	1	1	1		200
+#LightVol_1_Reg_object[3]	スカラ配列	4	1	1	1	1		150
+#LightVol_2_Reg_object[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：照明Vol2	300
+#LightVol_2_Reg_object[1]	スカラ配列	4	1	1	1	1		300
+#LightVol_2_Reg_object[2]	スカラ配列	4	1	1	1	1		300
+#LightVol_2_Reg_object[3]	スカラ配列	4	1	1	1	1		300
+#SS_Align_target[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：シャッタースピード	4
+#SS_Align_target[1]	スカラ配列	4	1	1	1	1		9
+#SS_Align_target[2]	スカラ配列	4	1	1	1	1		1
+#SS_Align_target[3]	スカラ配列	4	1	1	1	1		1
+#Sensitive_Align_target[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：カメラ感度	1
+#Sensitive_Align_target[1]	スカラ配列	4	1	1	1	1		1
+#Sensitive_Align_target[2]	スカラ配列	4	1	1	1	1		1
+#Sensitive_Align_target[3]	スカラ配列	4	1	1	1	1		1
+#LightVol_1_Align_target[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：照明Vol1	0
+#LightVol_1_Align_target[1]	スカラ配列	4	1	1	1	1		511
+#LightVol_1_Align_target[2]	スカラ配列	4	1	1	1	1		200
+#LightVol_1_Align_target[3]	スカラ配列	4	1	1	1	1		180
+#LightVol_2_Align_target[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：照明Vol2	300
+#LightVol_2_Align_target[1]	スカラ配列	4	1	1	1	1		300
+#LightVol_2_Align_target[2]	スカラ配列	4	1	1	1	1		300
+#LightVol_2_Align_target[3]	スカラ配列	4	1	1	1	1		300
+#SS_Align_object[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：シャッタースピード	5
+#SS_Align_object[1]	スカラ配列	4	1	1	1	1		9.05
+#SS_Align_object[2]	スカラ配列	4	1	1	1	1		1
+#SS_Align_object[3]	スカラ配列	4	1	1	1	1		1
+#Sensitive_Align_object[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：カメラ感度	1
+#Sensitive_Align_object[1]	スカラ配列	4	1	1	1	1		1
+#Sensitive_Align_object[2]	スカラ配列	4	1	1	1	1		1
+#Sensitive_Align_object[3]	スカラ配列	4	1	1	1	1		1
+#LightVol_1_Align_object[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：照明Vol1	0
+#LightVol_1_Align_object[1]	スカラ配列	4	1	1	1	1		511
+#LightVol_1_Align_object[2]	スカラ配列	4	1	1	1	1		200
+#LightVol_1_Align_object[3]	スカラ配列	4	1	1	1	1		150
+#LightVol_2_Align_object[0]	スカラ配列	4	1	1	1	1	撮像ユニット用：照明Vol2	300
+#LightVol_2_Align_object[1]	スカラ配列	4	1	1	1	1		300
+#LightVol_2_Align_object[2]	スカラ配列	4	1	1	1	1		300
+#LightVol_2_Align_object[3]	スカラ配列	4	1	1	1	1		300
+#Cam_set_DO	スカラ		1	0	0	0	ダイアログ用：0Cam1/1:Cam2/2:Cam3/3:Cam4	0
+#CC_Prm[0]	スカラ配列	64	1	0	0	0	カスタムコマンド用：MWX使用引数設定	0
+#CC_Prm[1]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[2]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[3]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[4]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[5]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[6]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[7]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[8]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[9]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[10]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[11]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[12]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[13]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[14]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[15]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[16]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[17]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[18]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[19]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[20]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[21]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[22]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[23]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[24]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[25]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[26]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[27]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[28]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[29]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[30]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[31]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[32]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[33]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[34]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[35]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[36]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[37]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[38]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[39]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[40]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[41]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[42]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[43]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[44]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[45]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[46]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[47]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[48]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[49]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[50]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[51]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[52]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[53]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[54]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[55]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[56]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[57]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[58]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[59]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[60]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[61]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[62]	スカラ配列	64	1	0	0	0		0
+#CC_Prm[63]	スカラ配列	64	1	0	0	0		0
+#Correlation_target[0]	スカラ配列	4	1	0	0	0	サーチ相関値　ターゲット　要素：カメラ場号	0
+#Correlation_target[1]	スカラ配列	4	1	0	0	0		0
+#Correlation_target[2]	スカラ配列	4	1	0	0	0		0
+#Correlation_target[3]	スカラ配列	4	1	0	0	0		0
+#Correlation_object[0]	スカラ配列	4	1	0	0	0	サーチ相関値　オブジェクト　要素：カメラ場号	0
+#Correlation_object[1]	スカラ配列	4	1	0	0	0		0
+#Correlation_object[2]	スカラ配列	4	1	0	0	0		0
+#Correlation_object[3]	スカラ配列	4	1	0	0	0		0
+#CamCenterAlignment	スカラ		1	0	0	0	基準位置選択：0＝基準位置登録 1=カメラ中心基準	0
+#CU_target_cam1[0].X	位置配列	5	1	1	1	0		0
+#CU_target_cam1[0].Y	位置配列	5	1	1	1	0		0
+#CU_target_cam1[1].X	位置配列	5	1	1	1	0		0
+#CU_target_cam1[1].Y	位置配列	5	1	1	1	0		0
+#CU_target_cam1[2].X	位置配列	5	1	1	1	0		0
+#CU_target_cam1[2].Y	位置配列	5	1	1	1	0		0
+#CU_target_cam1[3].X	位置配列	5	1	1	1	0		0
+#CU_target_cam1[3].Y	位置配列	5	1	1	1	0		0
+#CU_target_cam1[4].X	位置配列	5	1	1	1	0		0
+#CU_target_cam1[4].Y	位置配列	5	1	1	1	0		0
+#CU_object_cam1[0].X	位置配列	5	1	1	1	0		0
+#CU_object_cam1[0].Y	位置配列	5	1	1	1	0		0
+#CU_object_cam1[1].X	位置配列	5	1	1	1	0		0
+#CU_object_cam1[1].Y	位置配列	5	1	1	1	0		0
+#CU_object_cam1[2].X	位置配列	5	1	1	1	0		0
+#CU_object_cam1[2].Y	位置配列	5	1	1	1	0		0
+#CU_object_cam1[3].X	位置配列	5	1	1	1	0		0
+#CU_object_cam1[3].Y	位置配列	5	1	1	1	0		0
+#CU_object_cam1[4].X	位置配列	5	1	1	1	0		0
+#CU_object_cam1[4].Y	位置配列	5	1	1	1	0		0
+#CU_target_cam2[0].X	位置配列	5	1	1	1	0		0
+#CU_target_cam2[0].Y	位置配列	5	1	1	1	0		0
+#CU_target_cam2[1].X	位置配列	5	1	1	1	0		0
+#CU_target_cam2[1].Y	位置配列	5	1	1	1	0		0
+#CU_target_cam2[2].X	位置配列	5	1	1	1	0		0
+#CU_target_cam2[2].Y	位置配列	5	1	1	1	0		0
+#CU_target_cam2[3].X	位置配列	5	1	1	1	0		0
+#CU_target_cam2[3].Y	位置配列	5	1	1	1	0		0
+#CU_target_cam2[4].X	位置配列	5	1	1	1	0		0
+#CU_target_cam2[4].Y	位置配列	5	1	1	1	0		0
+#CU_object_cam2[0].X	位置配列	5	1	1	1	0		0
+#CU_object_cam2[0].Y	位置配列	5	1	1	1	0		0
+#CU_object_cam2[1].X	位置配列	5	1	1	1	0		0
+#CU_object_cam2[1].Y	位置配列	5	1	1	1	0		0
+#CU_object_cam2[2].X	位置配列	5	1	1	1	0		0
+#CU_object_cam2[2].Y	位置配列	5	1	1	1	0		0
+#CU_object_cam2[3].X	位置配列	5	1	1	1	0		0
+#CU_object_cam2[3].Y	位置配列	5	1	1	1	0		0
+#CU_object_cam2[4].X	位置配列	5	1	1	1	0		0
+#CU_object_cam2[4].Y	位置配列	5	1	1	1	0		0
+#dummy	スカラ		1	0	1	0		0
+#type_target_cam1	スカラ		1	1	1	1		0
+#type_target_cam2	スカラ		1	1	1	1		0
+#type_object_cam1	スカラ		1	1	1	1		0
+#type_object_cam2	スカラ		1	1	1	1		0
+#dT_target	スカラ		1	0	1	0		0
+#dT_total	スカラ		1	0	1	0		0
+#reg_target_angle	スカラ		1	1	1	0		0
+#ave_target_angle	スカラ		1	1	1	0		0
+#dX_target	スカラ		1	0	1	0		0
+#dY_target	スカラ		1	0	1	0		0
+#AX1_target	スカラ		1	0	1	0		0
+#AX2_target	スカラ		1	0	1	0		0
+#AX3_target	スカラ		1	0	1	0		0
+#Axis_offset[0]	スカラ配列	3	1	1	1	1		-0.6
+#Axis_offset[1]	スカラ配列	3	1	1	1	1		-0.6
+#Axis_offset[2]	スカラ配列	3	1	1	1	1		-0.6
+#cam_move_target_pix[0].X	位置配列	2	1	0	1	0		0
+#cam_move_target_pix[0].Y	位置配列	2	1	0	1	0		0
+#cam_move_target_pix[1].X	位置配列	2	1	0	1	0		0
+#cam_move_target_pix[1].Y	位置配列	2	1	0	1	0		0
+#Diff_target.X	位置		1	1	1	0		-1.267594
+#Diff_target.Y	位置		1	1	1	0		-0.13979
+#Diff_rot.X	位置		1	1	1	0		0.061405
+#Diff_rot.Y	位置		1	1	1	0		-0.523725
+#Diff.X	位置		1	1	1	0		0.038075
+#Diff.Y	位置		1	1	1	0		0.003071
+#RegMasterPosselec_target_CamXY[0].X	位置配列	2	1	1	1	0		-145
+#RegMasterPosselec_target_CamXY[0].Y	位置配列	2	1	1	1	0		225
+#RegMasterPosselec_target_CamXY[1].X	位置配列	2	1	1	1	0		-145
+#RegMasterPosselec_target_CamXY[1].Y	位置配列	2	1	1	1	0		-214
+#RegMasterPosselec_object_CamXY[0].X	位置配列	2	1	1	1	0		-145
+#RegMasterPosselec_object_CamXY[0].Y	位置配列	2	1	1	1	0		225
+#RegMasterPosselec_object_CamXY[1].X	位置配列	2	1	1	1	0		-145
+#RegMasterPosselec_object_CamXY[1].Y	位置配列	2	1	1	1	0		-214
+#AlignmentPosselec_target_CamXY[0].X	位置配列	2	1	1	1	0		-145
+#AlignmentPosselec_target_CamXY[0].Y	位置配列	2	1	1	1	0		225
+#AlignmentPosselec_target_CamXY[1].X	位置配列	2	1	1	1	0		-145
+#AlignmentPosselec_target_CamXY[1].Y	位置配列	2	1	1	1	0		-214
+#target_cam_move_reg_mm[0].X	位置配列	2	1	1	1	0		70.3047
+#target_cam_move_reg_mm[0].Y	位置配列	2	1	1	1	0		10.3052
+#target_cam_move_reg_mm[1].X	位置配列	2	1	1	1	0		-359.6948
+#target_cam_move_reg_mm[1].Y	位置配列	2	1	1	1	0		-429.3047
+#object_cam_move_reg_mm[0].X	位置配列	2	1	1	1	0		70.3047
+#object_cam_move_reg_mm[0].Y	位置配列	2	1	1	1	0		10.3052
+#object_cam_move_reg_mm[1].X	位置配列	2	1	1	1	0		-359.6948
+#object_cam_move_reg_mm[1].Y	位置配列	2	1	1	1	0		-429.3047
+#target_cam_move_detec_mm[0].X	位置配列	2	1	1	1	0		70.3047
+#target_cam_move_detec_mm[0].Y	位置配列	2	1	1	1	0		10.3052
+#target_cam_move_detec_mm[1].X	位置配列	2	1	1	1	0		-359.6948
+#target_cam_move_detec_mm[1].Y	位置配列	2	1	1	1	0		-429.3047
+#object_cam_move_detec_mm[0].X	位置配列	2	1	1	1	0		70.3047
+#object_cam_move_detec_mm[0].Y	位置配列	2	1	1	1	0		10.3052
+#object_cam_move_detec_mm[1].X	位置配列	2	1	1	1	0		-359.6948
+#object_cam_move_detec_mm[1].Y	位置配列	2	1	1	1	0		-429.3047
+#target_cam_move_reg_pix[0].X	位置配列	2	1	1	1	0		7544.23443
+#target_cam_move_reg_pix[0].Y	位置配列	2	1	1	1	0		-1084.757668
+#target_cam_move_reg_pix[1].X	位置配列	2	1	1	1	0		-39515.07012
+#target_cam_move_reg_pix[1].Y	位置配列	2	1	1	1	0		46593.28314
+#object_cam_move_reg_pix[0].X	位置配列	2	1	1	1	0		7544.23443
+#object_cam_move_reg_pix[0].Y	位置配列	2	1	1	1	0		-1084.757668
+#object_cam_move_reg_pix[1].X	位置配列	2	1	1	1	0		-39515.07012
+#object_cam_move_reg_pix[1].Y	位置配列	2	1	1	1	0		46593.28314
+#target_cam_move_detec_pix[0].X	位置配列	2	1	1	1	0		7544.23443
+#target_cam_move_detec_pix[0].Y	位置配列	2	1	1	1	0		-1084.757668
+#target_cam_move_detec_pix[1].X	位置配列	2	1	1	1	0		-39515.07012
+#target_cam_move_detec_pix[1].Y	位置配列	2	1	1	1	0		46593.28314
+#object_cam_move_detec_pix[0].X	位置配列	2	1	1	1	0		7544.23443
+#object_cam_move_detec_pix[0].Y	位置配列	2	1	1	1	0		-1084.757668
+#object_cam_move_detec_pix[1].X	位置配列	2	1	1	1	0		-39515.07012
+#object_cam_move_detec_pix[1].Y	位置配列	2	1	1	1	0		46593.28314
+#AlignmentPos_object_pix_CU[0].X	位置配列	2	1	1	1	0		8353.45927
+#AlignmentPos_object_pix_CU[0].Y	位置配列	2	1	1	1	0		-384.983129
+#AlignmentPos_object_pix_CU[1].X	位置配列	2	1	1	1	0		-38576.06329
+#AlignmentPos_object_pix_CU[1].Y	位置配列	2	1	1	1	0		47256.52435
+#MasterPosSelect_object_pix_CU[0].X	位置配列	2	1	1	1	0		8344.23443
+#MasterPosSelect_object_pix_CU[0].Y	位置配列	2	1	1	1	0		-484.757668
+#MasterPosSelect_object_pix_CU[1].X	位置配列	2	1	1	1	0		-38715.07012
+#MasterPosSelect_object_pix_CU[1].Y	位置配列	2	1	1	1	0		47193.28314
+#Ave_pos_target_camAxis[0].X	位置配列	2	1	1	1	0		144.330026
+#Ave_pos_target_camAxis[0].Y	位置配列	2	1	1	1	0		225.075128
+#Ave_pos_target_camAxis[1].X	位置配列	2	1	1	1	0		143.134786
+#Ave_pos_target_camAxis[1].Y	位置配列	2	1	1	1	0		-214.354708
+#Reg_pos_target_camAxis[0].X	位置配列	2	1	1	1	0		145
+#Reg_pos_target_camAxis[0].Y	位置配列	2	1	1	1	0		225
+#Reg_pos_target_camAxis[1].X	位置配列	2	1	1	1	0		145
+#Reg_pos_target_camAxis[1].Y	位置配列	2	1	1	1	0		-214
+#Ave_pos_object_camAxis[0].X	位置配列	2	1	1	1	0		-144.918957
+#Ave_pos_object_camAxis[0].Y	位置配列	2	1	1	1	0		224.092915
+#Ave_pos_object_camAxis[1].X	位置配列	2	1	1	1	0		-143.737258
+#Ave_pos_object_camAxis[1].Y	位置配列	2	1	1	1	0		-214.573392
+#Reg_pos_object_camAxis[0].X	位置配列	2	1	1	1	0		-145
+#Reg_pos_object_camAxis[0].Y	位置配列	2	1	1	1	0		225
+#Reg_pos_object_camAxis[1].X	位置配列	2	1	1	1	0		-145
+#Reg_pos_object_camAxis[1].Y	位置配列	2	1	1	1	0		-214
+#Ave_posM_target_camAxis.X	位置		1	1	1	0		143.732406
+#Ave_posM_target_camAxis.Y	位置		1	1	1	0		5.36021
+#Ave_posMC_target_camAxis.X	位置		1	1	1	0		143.717295
+#Ave_posMC_target_camAxis.Y	位置		1	1	1	0		5.751138
+#Reg_posM_target_camAxis.X	位置		1	1	1	0		145
+#Reg_posM_target_camAxis.Y	位置		1	1	1	0		5.5
+#zero[0].X	位置配列	2	1	1	1	0		23980.88705
+#zero[0].Y	位置配列	2	1	1	1	0		23988.30883
+#zero[1].X	位置配列	2	1	1	1	0		23980.88705
+#zero[1].Y	位置配列	2	1	1	1	0		23988.30883
+#Ave_posM_object_camAxis.X	位置		1	1	1	0		-144.328107
+#Ave_posM_object_camAxis.Y	位置		1	1	1	0		4.759761
+#Ave_posMC_object_camAxis.X	位置		1	1	1	0		-144.328232
+#Ave_posMC_object_camAxis.Y	位置		1	1	1	0		4.755989
+#Reg_posM_object_camAxis.X	位置		1	1	1	0		-145
+#Reg_posM_object_camAxis.Y	位置		1	1	1	0		5.5
+#dT_object	スカラ		1	1	1	0		-0.154346
